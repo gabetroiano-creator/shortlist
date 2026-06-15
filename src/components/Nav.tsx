@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const links: [string, string][] = [
   ["/", "My list"],
   ["/matrix", "Decision matrix"],
+  ["/compare", "Compare"],
 ];
 
 export default function Nav() {
