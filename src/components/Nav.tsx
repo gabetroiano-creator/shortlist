@@ -7,6 +7,7 @@ const links: [string, string][] = [
   ["/", "My list"],
   ["/matrix", "Decision matrix"],
   ["/compare", "Compare"],
+  ["/deadlines", "Deadlines"],
 ];
 
 export default function Nav() {
