@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { gradeList } from "@/lib/listHealth.mjs";
 import type { Tier, TierOrUnknown } from "@/lib/listHealth.mjs";
+import { useLocalStorage } from "@/lib/storage";
 import { initialSchools, type ScoredSchool } from "@/lib/data";
 
 const TIER_CLASS: Record<Tier, string> = {
@@ -43,7 +44,7 @@ function Stars({ value, onSet }: { value: number; onSet: (n: number) => void }) 
 }
 
 export default function Home() {
-  const [schools, setSchools] = useState<ScoredSchool[]>(initialSchools);
+  const [schools, setSchools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
 
   const grade = useMemo(() => gradeList(schools), [schools]);
