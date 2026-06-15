@@ -66,10 +66,10 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-app px-6 py-10">
-      <header className="mb-8 flex items-baseline justify-between">
-        <span className="font-serif text-2xl font-semibold tracking-tight">Shortlist</span>
+      <div className="mb-6 flex items-baseline justify-between">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight">Your list</h1>
         <span className="text-sm text-ink-muted nums">{schools.length} schools · senior year</span>
-      </header>
+      </div>
 
       <section className="rounded-lg border border-hairline bg-surface p-7">
         <p className="mb-2 text-xs uppercase tracking-[0.1em] text-ink-faint">List health</p>
