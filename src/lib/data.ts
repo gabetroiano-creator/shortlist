@@ -7,16 +7,30 @@ export const student = { sat: 1450 };
 
 export type ScoredSchool = CatalogSchool & { importance: number } & ChanceResult;
 
-// Build a school for the current student: attach importance + an honest chance.
-export function buildSchool(c: CatalogSchool, importance: number): ScoredSchool {
+// Build a school for the student: attach importance + an honest chance at their SAT.
+export function buildSchool(c: CatalogSchool, importance: number, sat: number = student.sat): ScoredSchool {
   return {
     ...c,
     importance,
     ...classifyAdmissionChance({
       admitRate: c.admitRate,
-      studentSat: student.sat,
+      studentSat: sat,
       satP25: c.satP25,
       satP75: c.satP75,
+    }),
+  };
+}
+
+// Re-run the chance estimate for an existing school at a new SAT (keeps everything
+// else). Used when the student updates their scores.
+export function reScore(s: ScoredSchool, sat: number): ScoredSchool {
+  return {
+    ...s,
+    ...classifyAdmissionChance({
+      admitRate: s.admitRate,
+      studentSat: sat,
+      satP25: s.satP25,
+      satP75: s.satP75,
     }),
   };
 }

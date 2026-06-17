@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { gradeList } from "@/lib/listHealth.mjs";
 import type { Tier } from "@/lib/listHealth.mjs";
 import { useLocalStorage } from "@/lib/storage";
-import { initialSchools, buildSchool, type ScoredSchool } from "@/lib/data";
+import { initialSchools, buildSchool, reScore, type ScoredSchool } from "@/lib/data";
 import { catalog } from "@/lib/catalog";
 import SchoolRow, { ROW_GRID } from "@/components/SchoolRow";
 
@@ -16,6 +16,13 @@ export default function Home() {
   const [schools, setSchools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
   const [addId, setAddId] = useState("");
+  const [profile, setProfile] = useLocalStorage("shortlist:profile", { sat: 1450 });
+
+  const setSat = (sat: number) => {
+    if (Number.isNaN(sat)) return;
+    setProfile({ sat });
+    setSchools((prev) => prev.map((s) => reScore(s, sat)));
+  };
 
   const grade = useMemo(() => gradeList(schools), [schools]);
   const c = grade.counts;
@@ -30,12 +37,12 @@ export default function Home() {
   const remove = (id: string) => setSchools((prev) => prev.filter((s) => s.id !== id));
   const add = (id: string) => {
     const cat = catalog.find((x) => x.id === id);
-    if (cat) setSchools((prev) => [...prev, buildSchool(cat, 3)]);
+    if (cat) setSchools((prev) => [...prev, buildSchool(cat, 3, profile.sat)]);
     setAddId("");
   };
   const addSafety = () => {
     const best = [...available].sort((a, b) => b.admitRate - a.admitRate)[0];
-    if (best) setSchools((prev) => [...prev, buildSchool(best, 2)]);
+    if (best) setSchools((prev) => [...prev, buildSchool(best, 2, profile.sat)]);
   };
   const onDrop = (to: number) =>
     setSchools((prev) => {
@@ -51,6 +58,14 @@ export default function Home() {
       <div className="mb-6 flex items-baseline justify-between">
         <h1 className="font-serif text-2xl font-semibold tracking-tight">Your list</h1>
         <span className="nums text-sm text-ink-muted">{schools.length} schools · senior year</span>
+      </div>
+
+      <div className="mb-4 flex items-center gap-3 text-sm">
+        <label htmlFor="sat" className="text-ink-muted">Your SAT</label>
+        <input id="sat" type="number" min={400} max={1600} step={10} value={profile.sat}
+          onChange={(e) => setSat(Number(e.target.value))}
+          className="nums w-24 rounded-md border border-hairline bg-surface px-2 py-1" />
+        <span className="text-xs text-ink-faint">Tiers and odds update as you change this</span>
       </div>
 
       <section className="rounded-lg border border-hairline bg-surface p-6 sm:p-7">
