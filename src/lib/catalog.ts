@@ -1,19 +1,21 @@
 // Phase-1 school catalog (mock). Real data comes from the College Scorecard
 // ingest job (see docs/design-doc.md). `scores` are 0-5 per decision factor.
 
+import stats from "@/data/scorecard-stats.json";
+
 export interface CatalogSchool {
   id: string;
   name: string;
   admitRate: number; // percent
-  satP25: number;
-  satP75: number;
+  satP25: number | null;
+  satP75: number | null;
   netPrice: number; // $/yr after typical aid
   deadline: string;
   scores: Record<string, number>;
 }
 
 // scores keys: academics, major, outcomes, aid, affordability, location, campus, selectivity
-export const catalog: CatalogSchool[] = [
+const base: CatalogSchool[] = [
   { id: "stanford", name: "Stanford", admitRate: 4, satP25: 1500, satP75: 1570, netPrice: 19400, deadline: "Nov 1",
     scores: { academics: 5, major: 5, outcomes: 5, aid: 3, affordability: 2, location: 4, campus: 4, selectivity: 5 } },
   { id: "mit", name: "MIT", admitRate: 5, satP25: 1520, satP75: 1580, netPrice: 22100, deadline: "Jan 1",
@@ -49,3 +51,22 @@ export const catalog: CatalogSchool[] = [
   { id: "asu", name: "Arizona State", admitRate: 88, satP25: 1120, satP75: 1380, netPrice: 15000, deadline: "Nov 1",
     scores: { academics: 3, major: 4, outcomes: 3, aid: 5, affordability: 5, location: 3, campus: 4, selectivity: 1 } },
 ];
+
+// Merge real College Scorecard stats over the curated base (numbers only; curated
+// names, deadlines, and factor scores are kept). Regenerate with `npm run ingest`.
+// Test-blind schools (UC/CSU) keep null SAT ranges, which the engine treats as
+// "selectivity only" — an honest fallback, not a guess.
+type Stat = { admitRate: number | null; satP25: number | null; satP75: number | null; netPrice: number | null };
+const STATS = stats as Record<string, Stat>;
+
+export const catalog: CatalogSchool[] = base.map((s) => {
+  const r = STATS[s.id];
+  if (!r) return s;
+  return {
+    ...s,
+    admitRate: r.admitRate ?? s.admitRate,
+    satP25: r.satP25,
+    satP75: r.satP75,
+    netPrice: r.netPrice ?? s.netPrice,
+  };
+});

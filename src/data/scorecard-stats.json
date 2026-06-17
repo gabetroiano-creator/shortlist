@@ -1,0 +1,121 @@
+{
+  "asu": {
+    "name": "Arizona State University Campus Immersion",
+    "admitRate": 89.9,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 14967
+  },
+  "slo": {
+    "name": "California Polytechnic State University-San Luis Obispo",
+    "admitRate": 31.3,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 16665
+  },
+  "ucb": {
+    "name": "University of California-Berkeley",
+    "admitRate": 11,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 13481
+  },
+  "ucd": {
+    "name": "University of California-Davis",
+    "admitRate": 41.8,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 14741
+  },
+  "uci": {
+    "name": "University of California-Irvine",
+    "admitRate": 28.6,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 14251
+  },
+  "ucla": {
+    "name": "University of California-Los Angeles",
+    "admitRate": 9,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 12548
+  },
+  "sdsu": {
+    "name": "San Diego State University",
+    "admitRate": 36.2,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 15364
+  },
+  "usc": {
+    "name": "University of Southern California",
+    "admitRate": 9.8,
+    "satP25": 1450,
+    "satP75": 1550,
+    "netPrice": 32740
+  },
+  "bu": {
+    "name": "Boston University",
+    "admitRate": 11.1,
+    "satP25": 1420,
+    "satP75": 1530,
+    "netPrice": 24402
+  },
+  "mit": {
+    "name": "Massachusetts Institute of Technology",
+    "admitRate": 4.6,
+    "satP25": 1520,
+    "satP75": 1580,
+    "netPrice": 20111
+  },
+  "neu": {
+    "name": "Northeastern University",
+    "admitRate": 5.2,
+    "satP25": 1440,
+    "satP75": 1540,
+    "netPrice": 30915
+  },
+  "umich": {
+    "name": "University of Michigan-Ann Arbor",
+    "admitRate": 15.6,
+    "satP25": 1360,
+    "satP75": 1530,
+    "netPrice": 13138
+  },
+  "nyu": {
+    "name": "New York University",
+    "admitRate": 9.2,
+    "satP25": 1480,
+    "satP75": 1560,
+    "netPrice": 37050
+  },
+  "psu": {
+    "name": "Pennsylvania State University-Main Campus",
+    "admitRate": 60.6,
+    "satP25": 1240,
+    "satP75": 1420,
+    "netPrice": 32875
+  },
+  "utaustin": {
+    "name": "The University of Texas at Austin",
+    "admitRate": 26.6,
+    "satP25": 1250,
+    "satP75": 1510,
+    "netPrice": 19857
+  },
+  "uw": {
+    "name": "University of Washington-Seattle Campus",
+    "admitRate": 39.2,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 14091
+  },
+  "stanford": {
+    "name": "Stanford University",
+    "admitRate": 3.6,
+    "satP25": 1510,
+    "satP75": 1580,
+    "netPrice": 13807
+  }
+}
