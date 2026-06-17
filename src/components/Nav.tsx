@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AuthButton from "@/components/AuthButton";
 
 const links: [string, string][] = [
   ["/", "My list"],
@@ -18,17 +19,20 @@ export default function Nav() {
         <Link href="/" className="font-serif text-xl font-semibold tracking-tight">
           Shortlist
         </Link>
-        <nav className="flex flex-wrap gap-4 text-sm sm:gap-5">
-          {links.map(([href, label]) => (
-            <Link
-              key={href}
-              href={href}
-              className={path === href ? "text-ink" : "text-ink-muted hover:text-ink"}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+          <nav className="flex flex-wrap gap-4 text-sm sm:gap-5">
+            {links.map(([href, label]) => (
+              <Link
+                key={href}
+                href={href}
+                className={path === href ? "text-ink" : "text-ink-muted hover:text-ink"}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+          <AuthButton />
+        </div>
       </div>
     </header>
   );

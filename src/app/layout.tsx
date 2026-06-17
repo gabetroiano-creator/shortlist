@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist } from "next/font/google";
 import Nav from "@/components/Nav";
+import SyncProvider from "@/components/SyncProvider";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${geist.variable}`}>
       <body className="bg-paper text-ink">
+        <SyncProvider />
         <Nav />
         {children}
       </body>
