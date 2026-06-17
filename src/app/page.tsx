@@ -7,6 +7,7 @@ import { useLocalStorage } from "@/lib/storage";
 import { initialSchools, buildSchool, reScore, type ScoredSchool } from "@/lib/data";
 import { catalog } from "@/lib/catalog";
 import SchoolRow, { ROW_GRID } from "@/components/SchoolRow";
+import { encodeList } from "@/lib/share";
 
 const DOT: Record<Tier, string> = {
   reach: "bg-reach-dot", target: "bg-target-dot", likely: "bg-likely-dot", safety: "bg-safety-dot",
@@ -18,10 +19,23 @@ export default function Home() {
   const [addId, setAddId] = useState("");
   const [profile, setProfile] = useLocalStorage("shortlist:profile", { sat: 1450 });
 
+  const [copied, setCopied] = useState(false);
+
   const setSat = (sat: number) => {
     if (Number.isNaN(sat)) return;
     setProfile({ sat });
     setSchools((prev) => prev.map((s) => reScore(s, sat)));
+  };
+
+  const share = async () => {
+    const url = `${location.origin}/shared?d=${encodeList(profile.sat, schools)}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.prompt("Copy your read-only share link:", url);
+    }
   };
 
   const grade = useMemo(() => gradeList(schools), [schools]);
@@ -55,9 +69,15 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-app px-6 py-10">
-      <div className="mb-6 flex items-baseline justify-between">
+      <div className="mb-6 flex items-baseline justify-between gap-3">
         <h1 className="font-serif text-2xl font-semibold tracking-tight">Your list</h1>
-        <span className="nums text-sm text-ink-muted">{schools.length} schools · senior year</span>
+        <div className="flex items-center gap-3">
+          <span className="nums hidden text-sm text-ink-muted sm:inline">{schools.length} schools</span>
+          <button onClick={share} disabled={schools.length === 0}
+            className="rounded-md border border-hairline px-3 py-1.5 text-sm hover:bg-accent-tint disabled:opacity-40">
+            {copied ? "Copied!" : "Share"}
+          </button>
+        </div>
       </div>
 
       <div className="mb-4 flex items-center gap-3 text-sm">
