@@ -2,35 +2,15 @@
 
 import { useMemo, useState } from "react";
 import { gradeList } from "@/lib/listHealth.mjs";
-import type { Tier, TierOrUnknown } from "@/lib/listHealth.mjs";
+import type { Tier } from "@/lib/listHealth.mjs";
 import { useLocalStorage } from "@/lib/storage";
 import { initialSchools, buildSchool, type ScoredSchool } from "@/lib/data";
 import { catalog } from "@/lib/catalog";
+import SchoolRow, { ROW_GRID } from "@/components/SchoolRow";
 
-const TIER_CLASS: Record<Tier, string> = {
-  reach: "bg-reach-fill text-reach-text",
-  target: "bg-target-fill text-target-text",
-  likely: "bg-likely-fill text-likely-text",
-  safety: "bg-safety-fill text-safety-text",
-};
-const TIER_LABEL: Record<TierOrUnknown, string> = {
-  reach: "Reach", target: "Target", likely: "Likely", safety: "Safety", unknown: "Unknown",
-};
 const DOT: Record<Tier, string> = {
   reach: "bg-reach-dot", target: "bg-target-dot", likely: "bg-likely-dot", safety: "bg-safety-dot",
 };
-const GRID = "grid-cols-[20px_minmax(0,1.6fr)_1.4fr_0.9fr_0.9fr_0.8fr_28px]";
-
-function Stars({ value, onSet }: { value: number; onSet: (n: number) => void }) {
-  return (
-    <span className="inline-flex gap-0.5">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <button key={n} aria-label={`Set importance ${n}`} onClick={() => onSet(n)}
-          className={`text-base leading-none ${n <= value ? "text-[#BA7517]" : "text-hairline"}`}>★</button>
-      ))}
-    </span>
-  );
-}
 
 export default function Home() {
   const [schools, setSchools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
@@ -73,9 +53,11 @@ export default function Home() {
         <span className="nums text-sm text-ink-muted">{schools.length} schools · senior year</span>
       </div>
 
-      <section className="rounded-lg border border-hairline bg-surface p-7">
+      <section className="rounded-lg border border-hairline bg-surface p-6 sm:p-7">
         <p className="mb-2 text-xs uppercase tracking-[0.1em] text-ink-faint">List health</p>
-        <p className="verdict-rise font-serif text-[30px] font-semibold leading-tight text-verdict">{grade.verdict}</p>
+        <p className="verdict-rise font-serif text-2xl font-semibold leading-tight text-verdict sm:text-[30px]">
+          {grade.verdict}
+        </p>
 
         <div className="mt-5 flex h-2.5 overflow-hidden rounded-full">
           <span className="bg-reach-dot" style={{ flex: c.reach || 0.0001 }} />
@@ -100,7 +82,7 @@ export default function Home() {
 
       <div className="mt-6 flex items-center gap-2">
         <select value={addId} onChange={(e) => setAddId(e.target.value)}
-          className="rounded-md border border-hairline bg-surface px-3 py-2 text-sm">
+          className="min-w-0 flex-1 rounded-md border border-hairline bg-surface px-3 py-2 text-sm sm:flex-none">
           <option value="">Add a school…</option>
           {available.map((cat) => (
             <option key={cat.id} value={cat.id}>{cat.name} · {cat.admitRate}% admit</option>
@@ -113,31 +95,14 @@ export default function Home() {
       </div>
 
       <div className="mt-3 overflow-hidden rounded-lg border border-hairline bg-surface">
-        <div className={`grid ${GRID} gap-2 border-b border-hairline px-5 py-2 text-xs text-ink-faint`}>
+        <div className={`hidden gap-2 border-b border-hairline px-5 py-2 text-xs text-ink-faint sm:grid ${ROW_GRID}`}>
           <span /><span>School</span><span>Importance</span><span>Tier</span><span>Projected</span><span>Deadline</span><span />
         </div>
 
         {schools.map((s, i) => (
-          <div key={s.id} draggable onDragStart={() => setDragFrom(i)}
-            onDragOver={(e) => e.preventDefault()} onDrop={() => onDrop(i)}
-            className={`grid ${GRID} items-center gap-2 border-b border-hairline px-5 py-3 last:border-b-0`}>
-            <span className="cursor-grab select-none text-ink-faint" aria-hidden>⠿</span>
-            <span className="text-sm font-medium">{s.name}</span>
-            <Stars value={s.importance} onSet={(n) => setImportance(s.id, n)} />
-            <span>
-              {s.tier === "unknown" ? (
-                <span className="text-sm text-ink-faint">—</span>
-              ) : (
-                <span className={`rounded-full px-2.5 py-0.5 text-xs ${TIER_CLASS[s.tier as Tier]}`}>{TIER_LABEL[s.tier]}</span>
-              )}
-            </span>
-            <span className="nums text-sm text-ink-muted" title={s.basis}>
-              {s.projectedLabel}{s.projected !== null && <span className="text-ink-faint"> est</span>}
-            </span>
-            <span className="nums text-sm text-ink-muted">{s.deadline}</span>
-            <button onClick={() => remove(s.id)} aria-label={`Remove ${s.name}`}
-              className="text-ink-faint hover:text-verdict">×</button>
-          </div>
+          <SchoolRow key={s.id} s={s} index={i}
+            onImportance={setImportance} onRemove={remove}
+            onDragStart={setDragFrom} onDragOver={(e) => e.preventDefault()} onDrop={onDrop} />
         ))}
 
         {schools.length === 0 && (

@@ -14,11 +14,11 @@ export default function Nav() {
   const path = usePathname();
   return (
     <header className="border-b border-hairline">
-      <div className="mx-auto flex h-14 max-w-app items-center justify-between px-6">
+      <div className="mx-auto flex max-w-app flex-col gap-2 px-6 py-3 sm:h-14 sm:flex-row sm:items-center sm:justify-between sm:gap-0 sm:py-0">
         <Link href="/" className="font-serif text-xl font-semibold tracking-tight">
           Shortlist
         </Link>
-        <nav className="flex gap-5 text-sm">
+        <nav className="flex flex-wrap gap-4 text-sm sm:gap-5">
           {links.map(([href, label]) => (
             <Link
               key={href}
