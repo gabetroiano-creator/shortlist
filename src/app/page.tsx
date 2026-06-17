@@ -16,7 +16,7 @@ const DOT: Record<Tier, string> = {
 export default function Home() {
   const [schools, setSchools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
-  const [addId, setAddId] = useState("");
+  const [addQuery, setAddQuery] = useState("");
   const [profile, setProfile] = useLocalStorage("shortlist:profile", { sat: 1450 });
 
   const [copied, setCopied] = useState(false);
@@ -52,8 +52,13 @@ export default function Home() {
   const add = (id: string) => {
     const cat = catalog.find((x) => x.id === id);
     if (cat) setSchools((prev) => [...prev, buildSchool(cat, 3, profile.sat)]);
-    setAddId("");
+    setAddQuery("");
   };
+
+  const matches = useMemo(() => {
+    const q = addQuery.trim().toLowerCase();
+    return q ? available.filter((c) => c.name.toLowerCase().includes(q)).slice(0, 8) : [];
+  }, [addQuery, available]);
   const addSafety = () => {
     const best = [...available].sort((a, b) => b.admitRate - a.admitRate)[0];
     if (best) setSchools((prev) => [...prev, buildSchool(best, 2, profile.sat)]);
@@ -115,18 +120,32 @@ export default function Home() {
         )}
       </section>
 
-      <div className="mt-6 flex items-center gap-2">
-        <select value={addId} onChange={(e) => setAddId(e.target.value)}
-          className="min-w-0 flex-1 rounded-md border border-hairline bg-surface px-3 py-2 text-sm sm:flex-none">
-          <option value="">Add a school…</option>
-          {available.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.name} · {cat.admitRate}% admit</option>
-          ))}
-        </select>
-        <button onClick={() => addId && add(addId)} disabled={!addId}
-          className="rounded-md border border-hairline px-3 py-2 text-sm hover:bg-accent-tint disabled:opacity-40">
-          Add
-        </button>
+      <div className="relative mt-6 sm:w-96">
+        <input
+          type="text"
+          value={addQuery}
+          onChange={(e) => setAddQuery(e.target.value)}
+          placeholder="Add a school — search by name…"
+          className="w-full rounded-md border border-hairline bg-surface px-3 py-2 text-sm"
+          aria-label="Search for a school to add"
+        />
+        {addQuery.trim() && (
+          <ul className="absolute z-10 mt-1 max-h-64 w-full overflow-auto rounded-md border border-hairline bg-surface">
+            {matches.length === 0 ? (
+              <li className="px-3 py-2 text-sm text-ink-muted">No matches in your list’s catalog.</li>
+            ) : (
+              matches.map((cat) => (
+                <li key={cat.id}>
+                  <button onClick={() => add(cat.id)}
+                    className="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-accent-tint">
+                    <span className="truncate">{cat.name}</span>
+                    <span className="nums shrink-0 text-ink-faint">{cat.admitRate}% admit</span>
+                  </button>
+                </li>
+              ))
+            )}
+          </ul>
+        )}
       </div>
 
       <div className="mt-3 overflow-hidden rounded-lg border border-hairline bg-surface">
