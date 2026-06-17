@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Radar from "@/components/Radar";
 import Scatter, { type Point } from "@/components/Scatter";
 import { useLocalStorage } from "@/lib/storage";
@@ -19,6 +19,10 @@ const TIER_DOT: Record<string, string> = {
 export default function MatrixPage() {
   const [crit, setCrit] = useLocalStorage<Criterion[]>("shortlist:criteria", defaultCriteria);
   const [schools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
+
+  const [compareId, setCompareId] = useState("");
+  const compareSchool = schools.find((s) => s.id === compareId);
+  const overlay = compareSchool ? crit.map((c) => compareSchool.scores[c.id] ?? 0) : undefined;
 
   const setWeight = (id: string, n: number) =>
     setCrit((prev) => prev.map((c) => (c.id === id ? { ...c, weight: n } : c)));
@@ -56,7 +60,26 @@ export default function MatrixPage() {
       </div>
 
       <div className="grid items-center gap-6 rounded-lg border border-hairline bg-surface p-6 md:grid-cols-[minmax(0,1fr)_300px]">
-        <Radar labels={crit.map((c) => c.label)} values={crit.map((c) => c.weight)} max={5} />
+        <div>
+          <Radar labels={crit.map((c) => c.label)} values={crit.map((c) => c.weight)} max={5} overlay={overlay} />
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <span className="inline-flex items-center gap-1.5 text-ink-muted">
+              <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: "#C0452B" }} /> Your priorities
+            </span>
+            {compareSchool && (
+              <span className="inline-flex items-center gap-1.5 text-ink-muted">
+                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: "#2B3A67" }} /> {compareSchool.name}
+              </span>
+            )}
+            <select value={compareId} onChange={(e) => setCompareId(e.target.value)}
+              className="ml-auto rounded-md border border-hairline bg-surface px-2 py-1 text-sm">
+              <option value="">Overlay a school…</option>
+              {schools.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
         <div className="space-y-3">
           {crit.map((c) => (
             <div key={c.id} className="flex items-center gap-3">

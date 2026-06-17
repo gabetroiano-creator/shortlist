@@ -4,10 +4,12 @@ export default function Radar({
   labels,
   values,
   max = 5,
+  overlay,
 }: {
   labels: string[];
   values: number[];
   max?: number;
+  overlay?: number[]; // optional second series (e.g. a school's factor scores)
 }) {
   const N = labels.length;
   const cx = 280;
@@ -33,10 +35,24 @@ export default function Radar({
         const [x, y] = pt(i, R);
         return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="#E7E2D8" strokeWidth={1} />;
       })}
+      {overlay && (
+        <polygon
+          points={overlay
+            .map((v, i) => pt(i, (Math.max(0, Math.min(max, v)) / max) * R).join(","))
+            .join(" ")}
+          fill="rgba(43,58,103,0.12)"
+          stroke="#2B3A67"
+          strokeWidth={2}
+        />
+      )}
       <polygon points={shape} fill="rgba(216,90,48,0.18)" stroke="#C0452B" strokeWidth={2} />
       {values.map((v, i) => {
         const [x, y] = pt(i, (Math.max(0, Math.min(max, v)) / max) * R);
         return <circle key={i} cx={x} cy={y} r={3.5} fill="#C0452B" />;
+      })}
+      {overlay?.map((v, i) => {
+        const [x, y] = pt(i, (Math.max(0, Math.min(max, v)) / max) * R);
+        return <circle key={`o${i}`} cx={x} cy={y} r={3} fill="#2B3A67" />;
       })}
       {labels.map((label, i) => {
         const [lx, ly] = pt(i, R + 22);
