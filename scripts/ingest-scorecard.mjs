@@ -28,6 +28,9 @@ const IPEDS = {
   usc: 123961, nyu: 193900, bu: 164988, umich: 170976, uci: 110653,
   utaustin: 228778, sdsu: 122409, uw: 236948, ucd: 110644, psu: 214777,
   slo: 110422, asu: 104151,
+  ufl: 134130, osu: 204796, wisc: 240444, illinois: 145637, purdue: 243780,
+  umd: 163286, rutgers: 186380, indiana: 151351, msu: 171100, uga: 139959,
+  umn: 174066, cuboulder: 126614, arizona: 104179,
 };
 
 const FIELDS = [

@@ -6,6 +6,13 @@
     "satP75": null,
     "netPrice": 14967
   },
+  "arizona": {
+    "name": "University of Arizona",
+    "admitRate": 86.1,
+    "satP25": 1150,
+    "satP75": 1420,
+    "netPrice": 16674
+  },
   "slo": {
     "name": "California Polytechnic State University-San Luis Obispo",
     "admitRate": 31.3,
@@ -55,6 +62,48 @@
     "satP75": 1550,
     "netPrice": 32740
   },
+  "cuboulder": {
+    "name": "University of Colorado Boulder",
+    "admitRate": 78.1,
+    "satP25": 1240,
+    "satP75": 1430,
+    "netPrice": 25346
+  },
+  "ufl": {
+    "name": "University of Florida",
+    "admitRate": 24.2,
+    "satP25": 1320,
+    "satP75": 1480,
+    "netPrice": 6541
+  },
+  "uga": {
+    "name": "University of Georgia",
+    "admitRate": 37.7,
+    "satP25": 1270,
+    "satP75": 1480,
+    "netPrice": 13936
+  },
+  "illinois": {
+    "name": "University of Illinois Urbana-Champaign",
+    "admitRate": 42.4,
+    "satP25": 1310,
+    "satP75": 1520,
+    "netPrice": 14355
+  },
+  "indiana": {
+    "name": "Indiana University-Bloomington",
+    "admitRate": 78.2,
+    "satP25": 1170,
+    "satP75": 1400,
+    "netPrice": 16264
+  },
+  "umd": {
+    "name": "University of Maryland-College Park",
+    "admitRate": 44.8,
+    "satP25": 1400,
+    "satP75": 1530,
+    "netPrice": 15678
+  },
   "bu": {
     "name": "Boston University",
     "admitRate": 11.1,
@@ -83,12 +132,40 @@
     "satP75": 1530,
     "netPrice": 13138
   },
+  "msu": {
+    "name": "Michigan State University",
+    "admitRate": 84.8,
+    "satP25": 1180,
+    "satP75": 1360,
+    "netPrice": 19680
+  },
+  "umn": {
+    "name": "University of Minnesota-Twin Cities",
+    "admitRate": 79.8,
+    "satP25": 1300,
+    "satP75": 1500,
+    "netPrice": 16778
+  },
+  "rutgers": {
+    "name": "Rutgers University-New Brunswick",
+    "admitRate": 58.2,
+    "satP25": 1310,
+    "satP75": 1500,
+    "netPrice": 24406
+  },
   "nyu": {
     "name": "New York University",
     "admitRate": 9.2,
     "satP25": 1480,
     "satP75": 1560,
     "netPrice": 37050
+  },
+  "osu": {
+    "name": "Ohio State University-Main Campus",
+    "admitRate": 60.6,
+    "satP25": 1310,
+    "satP75": 1480,
+    "netPrice": 17339
   },
   "psu": {
     "name": "Pennsylvania State University-Main Campus",
@@ -111,11 +188,25 @@
     "satP75": null,
     "netPrice": 14091
   },
+  "wisc": {
+    "name": "University of Wisconsin-Madison",
+    "admitRate": 45.2,
+    "satP25": 1380,
+    "satP75": 1520,
+    "netPrice": 17354
+  },
   "stanford": {
     "name": "Stanford University",
     "admitRate": 3.6,
     "satP25": 1510,
     "satP75": 1580,
     "netPrice": 13807
+  },
+  "purdue": {
+    "name": "Purdue University-Main Campus",
+    "admitRate": 49.9,
+    "satP25": 1200,
+    "satP75": 1480,
+    "netPrice": 14600
   }
 }
