@@ -108,6 +108,8 @@ export default function Landing() {
       <footer className="mx-auto max-w-app px-6 py-10 text-sm text-ink-faint">
         <Link href="/methodology" className="text-accent">Methodology & sources</Link>
         <span className="mx-2">·</span>
+        <Link href="/privacy" className="text-accent">Privacy</Link>
+        <span className="mx-2">·</span>
         Built for students, free.
       </footer>
     </div>

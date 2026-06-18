@@ -1,7 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@/lib/storage";
-import { reScore, type ScoredSchool } from "@/lib/data";
+import { reScore, buildStarterList, type ScoredSchool } from "@/lib/data";
 import { DEFAULT_PROFILE, type Profile } from "@/lib/profile";
 
 // Recompute the stored list's odds at a new SAT (My list re-reads on next visit).
@@ -17,10 +18,18 @@ function recomputeStored(sat: number) {
 }
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [profile, setProfile] = useLocalStorage<Profile>("shortlist:profile", DEFAULT_PROFILE);
 
   const set = <K extends keyof Profile>(key: K, value: Profile[K]) =>
     setProfile((p) => ({ ...p, [key]: value }));
+
+  const buildStarter = () => {
+    const has = JSON.parse(localStorage.getItem("shortlist:schools") ?? "[]").length > 0;
+    if (has && !window.confirm("Replace your current list with a fresh balanced starter set?")) return;
+    localStorage.setItem("shortlist:schools", JSON.stringify(buildStarterList(profile.sat)));
+    router.push("/list");
+  };
 
   const setSat = (sat: number) => {
     if (Number.isNaN(sat)) return;
@@ -55,6 +64,16 @@ export default function ProfilePage() {
             placeholder="e.g. Computer Science" className={inputCls} />
         </Field>
       </div>
+
+      <section className="mt-8 rounded-lg border border-hairline bg-surface p-5">
+        <h2 className="font-serif text-lg font-semibold">New here?</h2>
+        <p className="mt-1 text-sm text-ink-muted">
+          Build a balanced starter list from your SAT — a few reaches, targets, and safeties to react to.
+        </p>
+        <button onClick={buildStarter} className="mt-3 rounded-md bg-accent px-4 py-2 text-sm text-paper hover:bg-accent-hover">
+          Build my starter list
+        </button>
+      </section>
 
       <p className="mt-6 text-xs text-ink-faint">
         Odds today use SAT vs. each school’s reported test range plus its admission rate. ACT and GPA

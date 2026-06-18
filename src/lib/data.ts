@@ -35,6 +35,18 @@ export function reScore(s: ScoredSchool, sat: number): ScoredSchool {
   };
 }
 
+// Onboarding: turn a SAT into a balanced starter list (a couple from each tier).
+export function buildStarterList(sat: number): ScoredSchool[] {
+  const scored = catalog.map((c) => buildSchool(c, 3, sat));
+  const ofTier = (t: string, n: number) => scored.filter((s) => s.tier === t).slice(0, n);
+  return [
+    ...ofTier("reach", 2),
+    ...ofTier("target", 2),
+    ...ofTier("likely", 1),
+    ...ofTier("safety", 2),
+  ];
+}
+
 const DEFAULT: [string, number][] = [
   ["stanford", 5],
   ["mit", 5],
