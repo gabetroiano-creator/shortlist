@@ -21,16 +21,24 @@ export default function MatrixPage() {
   const [schools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
 
   const [compareId, setCompareId] = useState("");
+  const [overrides, setOverrides] = useLocalStorage<Record<string, Record<string, number>>>(
+    "shortlist:scoreOverrides",
+    {}
+  );
   const compareSchool = schools.find((s) => s.id === compareId);
-  const overlay = compareSchool ? crit.map((c) => compareSchool.scores[c.id] ?? 0) : undefined;
+  const effective = (s: ScoredSchool): Record<string, number> => ({ ...s.scores, ...(overrides[s.id] ?? {}) });
+  const setScore = (schoolId: string, factorId: string, n: number) =>
+    setOverrides((prev) => ({ ...prev, [schoolId]: { ...(prev[schoolId] ?? {}), [factorId]: n } }));
+  const overlay = compareSchool ? crit.map((c) => effective(compareSchool)[c.id] ?? 0) : undefined;
 
   const setWeight = (id: string, n: number) =>
     setCrit((prev) => prev.map((c) => (c.id === id ? { ...c, weight: n } : c)));
 
-  // Weighted fit recomputes live as the sliders move.
+  // Weighted fit recomputes live as the sliders / per-school overrides move.
   const fits = useMemo(
-    () => schools.map((s) => ({ s, fit: weightedFit(s.scores, crit) })),
-    [schools, crit]
+    () => schools.map((s) => ({ s, fit: weightedFit(effective(s), crit) })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [schools, crit, overrides]
   );
 
   const vsImportance: Point[] = fits.map(({ s, fit }) => ({
@@ -101,6 +109,24 @@ export default function MatrixPage() {
           ))}
         </div>
       </div>
+
+      {compareSchool && (
+        <div className="mt-4 rounded-lg border border-hairline bg-surface p-5">
+          <h3 className="font-serif text-base font-semibold">Customize {compareSchool.name}’s factor scores</h3>
+          <p className="mb-3 text-xs text-ink-faint">Your own read of this school (0–5). Saved per school; flows into fit and the plots.</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {crit.map((c) => (
+              <div key={c.id} className="flex items-center gap-3">
+                <label className="w-28 shrink-0 text-sm text-ink-muted">{c.label}</label>
+                <input type="range" min={0} max={5} step={1} value={effective(compareSchool)[c.id] ?? 0}
+                  onChange={(e) => setScore(compareSchool.id, c.id, Number(e.target.value))}
+                  className="flex-1 accent-accent" />
+                <span className="nums w-3 text-right text-sm font-medium text-accent">{effective(compareSchool)[c.id] ?? 0}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <section className="rounded-lg border border-hairline bg-surface p-5">
