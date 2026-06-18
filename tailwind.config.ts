@@ -19,8 +19,8 @@ const config: Config = {
         verdict: "#993C1D",
       },
       fontFamily: {
-        serif: ["var(--font-fraunces)", "Georgia", "serif"],
-        sans: ["var(--font-geist)", "system-ui", "sans-serif"],
+        serif: ["var(--font-display)", "Georgia", "serif"],
+        sans: ["var(--font-body)", "system-ui", "sans-serif"],
       },
       borderRadius: { sm: "4px", md: "6px", lg: "10px" },
       maxWidth: { app: "1080px", reading: "720px" },

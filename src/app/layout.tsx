@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Fraunces, Geist } from "next/font/google";
+import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
 import Nav from "@/components/Nav";
 import SyncProvider from "@/components/SyncProvider";
 import "./globals.css";
 
-const fraunces = Fraunces({
+// Direction A — editorial: a high-contrast Didone for display, a warm grotesque
+// for body/data.
+const display = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["500", "600"],
-  variable: "--font-fraunces",
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
   display: "swap",
 });
 
-const geist = Geist({
+const body = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-geist",
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -30,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${geist.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="bg-paper text-ink">
         <SyncProvider />
         <Nav />
