@@ -48,6 +48,13 @@
     "satP75": null,
     "netPrice": 12548
   },
+  "pomona": {
+    "name": "Pitzer College",
+    "admitRate": 25.2,
+    "satP25": null,
+    "satP75": null,
+    "netPrice": 34191
+  },
   "sdsu": {
     "name": "San Diego State University",
     "admitRate": 36.2,
@@ -69,12 +76,33 @@
     "satP75": 1430,
     "netPrice": 25346
   },
+  "uconn": {
+    "name": "University of Connecticut",
+    "admitRate": 52.4,
+    "satP25": 1210,
+    "satP75": 1440,
+    "netPrice": 25097
+  },
+  "georgetown": {
+    "name": "Georgetown University",
+    "admitRate": 12.9,
+    "satP25": 1390,
+    "satP75": 1550,
+    "netPrice": 40815
+  },
   "ufl": {
     "name": "University of Florida",
     "admitRate": 24.2,
     "satP25": 1320,
     "satP75": 1480,
     "netPrice": 6541
+  },
+  "emory": {
+    "name": "Emory University",
+    "admitRate": 10.7,
+    "satP25": 1470,
+    "satP75": 1550,
+    "netPrice": 22585
   },
   "uga": {
     "name": "University of Georgia",
@@ -97,12 +125,33 @@
     "satP75": 1400,
     "netPrice": 16264
   },
+  "notredame": {
+    "name": "University of Notre Dame",
+    "admitRate": 11.3,
+    "satP25": 1455,
+    "satP75": 1560,
+    "netPrice": 26780
+  },
+  "tulane": {
+    "name": "Tulane University of Louisiana",
+    "admitRate": 14,
+    "satP25": 1400,
+    "satP75": 1520,
+    "netPrice": 39949
+  },
   "umd": {
     "name": "University of Maryland-College Park",
     "admitRate": 44.8,
     "satP25": 1400,
     "satP75": 1530,
     "netPrice": 15678
+  },
+  "amherst": {
+    "name": "Amherst College",
+    "admitRate": 9,
+    "satP25": 1490,
+    "satP75": 1580,
+    "netPrice": 23367
   },
   "bu": {
     "name": "Boston University",
@@ -124,6 +173,20 @@
     "satP25": 1440,
     "satP75": 1540,
     "netPrice": 30915
+  },
+  "tufts": {
+    "name": "Tufts University",
+    "admitRate": 11.5,
+    "satP25": 1470,
+    "satP75": 1560,
+    "netPrice": 39998
+  },
+  "williams": {
+    "name": "Williams College",
+    "admitRate": 8.3,
+    "satP25": 1490,
+    "satP75": 1570,
+    "netPrice": 17716
   },
   "umich": {
     "name": "University of Michigan-Ann Arbor",
@@ -160,6 +223,20 @@
     "satP75": 1560,
     "netPrice": 37050
   },
+  "syracuse": {
+    "name": "Syracuse University",
+    "admitRate": 45.9,
+    "satP25": 1270,
+    "satP75": 1440,
+    "netPrice": 38793
+  },
+  "wakeforest": {
+    "name": "Wake Forest University",
+    "admitRate": 21.7,
+    "satP25": 1410,
+    "satP75": 1520,
+    "netPrice": 28719
+  },
   "osu": {
     "name": "Ohio State University-Main Campus",
     "admitRate": 60.6,
@@ -167,12 +244,47 @@
     "satP75": 1480,
     "netPrice": 17339
   },
+  "cmu": {
+    "name": "Carnegie Mellon University",
+    "admitRate": 11.7,
+    "satP25": 1500,
+    "satP75": 1570,
+    "netPrice": 31944
+  },
   "psu": {
     "name": "Pennsylvania State University-Main Campus",
     "admitRate": 60.6,
     "satP25": 1240,
     "satP75": 1420,
     "netPrice": 32875
+  },
+  "villanova": {
+    "name": "Villanova University",
+    "admitRate": 27,
+    "satP25": 1395,
+    "satP75": 1510,
+    "netPrice": 43756
+  },
+  "clemson": {
+    "name": "Clemson University",
+    "admitRate": 38.3,
+    "satP25": 1240,
+    "satP75": 1410,
+    "netPrice": 22253
+  },
+  "vanderbilt": {
+    "name": "Vanderbilt University",
+    "admitRate": 5.9,
+    "satP25": 1500,
+    "satP75": 1570,
+    "netPrice": 15846
+  },
+  "rice": {
+    "name": "Rice University",
+    "admitRate": 8,
+    "satP25": 1510,
+    "satP75": 1570,
+    "netPrice": 13370
   },
   "utaustin": {
     "name": "The University of Texas at Austin",

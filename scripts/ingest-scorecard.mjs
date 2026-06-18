@@ -31,6 +31,10 @@ const IPEDS = {
   ufl: 134130, osu: 204796, wisc: 240444, illinois: 145637, purdue: 243780,
   umd: 163286, rutgers: 186380, indiana: 151351, msu: 171100, uga: 139959,
   umn: 174066, cuboulder: 126614, arizona: 104179,
+  vanderbilt: 221999, rice: 227757, emory: 139658, notredame: 152080,
+  georgetown: 131496, cmu: 211440, tufts: 168148, williams: 168342,
+  amherst: 164465, pomona: 121257, wakeforest: 199847, tulane: 160755,
+  villanova: 216597, syracuse: 196413, clemson: 217882, uconn: 129020,
 };
 
 const FIELDS = [
