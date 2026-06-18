@@ -25,11 +25,15 @@ export default function MatrixPage() {
     "shortlist:scoreOverrides",
     {}
   );
-  const compareSchool = schools.find((s) => s.id === compareId);
+  // Always compare against a real school (default to the first) so the radar
+  // isn't just a mirror of your own sliders.
+  const activeId = compareId || schools[0]?.id || "";
+  const compareSchool = schools.find((s) => s.id === activeId);
   const effective = (s: ScoredSchool): Record<string, number> => ({ ...s.scores, ...(overrides[s.id] ?? {}) });
   const setScore = (schoolId: string, factorId: string, n: number) =>
     setOverrides((prev) => ({ ...prev, [schoolId]: { ...(prev[schoolId] ?? {}), [factorId]: n } }));
   const overlay = compareSchool ? crit.map((c) => effective(compareSchool)[c.id] ?? 0) : undefined;
+  const compareFit = compareSchool ? weightedFit(effective(compareSchool), crit) : 0;
 
   const setWeight = (id: string, n: number) =>
     setCrit((prev) => prev.map((c) => (c.id === id ? { ...c, weight: n } : c)));
@@ -40,6 +44,18 @@ export default function MatrixPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [schools, crit, overrides]
   );
+
+  // Weighted fit barely varies (most schools score 3.5-4.8), so auto-scale the
+  // fit axis to the data range — otherwise every dot bunches at the top.
+  const fitVals = fits.map((f) => f.fit);
+  const fitDomain: [number, number] = fitVals.length
+    ? (() => {
+        const lo = Math.min(...fitVals);
+        const hi = Math.max(...fitVals);
+        const pad = Math.max(0.3, (hi - lo) * 0.3);
+        return [Math.max(0, Math.floor((lo - pad) * 2) / 2), Math.min(5, Math.ceil((hi + pad) * 2) / 2)];
+      })()
+    : [0, 5];
 
   const vsImportance: Point[] = fits.map(({ s, fit }) => ({
     x: s.importance,
@@ -69,24 +85,32 @@ export default function MatrixPage() {
 
       <div className="grid items-center gap-6 rounded-lg border border-hairline bg-surface p-6 md:grid-cols-[minmax(0,1fr)_300px]">
         <div>
+          {compareSchool && (
+            <p className="mb-1 text-center font-serif text-xl font-semibold">
+              {compareSchool.name} — {Math.round((compareFit / 5) * 100)}% match for what you want
+            </p>
+          )}
           <Radar labels={crit.map((c) => c.label)} values={crit.map((c) => c.weight)} max={5} overlay={overlay} />
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
             <span className="inline-flex items-center gap-1.5 text-ink-muted">
-              <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: "#C0452B" }} /> Your priorities
+              <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: "#C0452B" }} /> What you want
             </span>
             {compareSchool && (
               <span className="inline-flex items-center gap-1.5 text-ink-muted">
-                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: "#2B3A67" }} /> {compareSchool.name}
+                <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: "#2B3A67" }} /> {compareSchool.name} offers
               </span>
             )}
-            <select value={compareId} onChange={(e) => setCompareId(e.target.value)}
+            <select value={activeId} onChange={(e) => setCompareId(e.target.value)}
               className="ml-auto rounded-md border border-hairline bg-surface px-2 py-1 text-sm">
-              <option value="">Overlay a school…</option>
               {schools.map((s) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
           </div>
+          <p className="mt-2 text-xs text-ink-faint">
+            The more the blue (what a school offers) fills the red (what you want), the better the match.
+            The % weights each factor by your sliders.
+          </p>
         </div>
         <div className="space-y-3">
           {crit.map((c) => (
@@ -132,12 +156,12 @@ export default function MatrixPage() {
         <section className="rounded-lg border border-hairline bg-surface p-5">
           <h2 className="font-serif text-lg font-semibold">Fit vs. how much you want it</h2>
           <p className="mb-2 text-sm text-ink-muted">Top-right = you want it and it fits you.</p>
-          <Scatter points={vsImportance} xLabel="Importance to you" yLabel="Weighted fit" xDomain={[0, 5]} yDomain={[0, 5]} />
+          <Scatter points={vsImportance} xLabel="Your interest (stars)" yLabel="Fit for you" xDomain={[0, 5]} yDomain={fitDomain} />
         </section>
         <section className="rounded-lg border border-hairline bg-surface p-5">
           <h2 className="font-serif text-lg font-semibold">Fit vs. your odds</h2>
           <p className="mb-2 text-sm text-ink-muted">Top-right = good fit and reachable.</p>
-          <Scatter points={vsAcceptance} xLabel="Projected acceptance rate" yLabel="Weighted fit" xDomain={[0, 100]} yDomain={[0, 5]} />
+          <Scatter points={vsAcceptance} xLabel="Projected acceptance rate" yLabel="Fit for you" xDomain={[0, 100]} yDomain={fitDomain} />
         </section>
       </div>
 
