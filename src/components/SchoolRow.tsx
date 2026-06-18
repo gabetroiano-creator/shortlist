@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { Tier, TierOrUnknown } from "@/lib/listHealth.mjs";
 import type { ScoredSchool } from "@/lib/data";
 
@@ -67,7 +68,7 @@ export default function SchoolRow({
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-2">
             {handle}
-            <span className="truncate text-sm font-medium">{s.name}</span>
+            <Link href={`/school/${s.id}`} className="truncate text-sm font-medium hover:text-accent">{s.name}</Link>
             <TierTag tier={s.tier} />
           </div>
           {removeBtn}
@@ -82,7 +83,7 @@ export default function SchoolRow({
       {/* Desktop: table row */}
       <div className={`hidden gap-2 sm:grid sm:items-center ${ROW_GRID}`}>
         {handle}
-        <span className="text-sm font-medium">{s.name}</span>
+        <Link href={`/school/${s.id}`} className="text-sm font-medium hover:text-accent">{s.name}</Link>
         <Stars value={s.importance} onSet={(n) => onImportance(s.id, n)} />
         <TierTag tier={s.tier} />
         <Projected s={s} />
