@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { gradeList } from "@/lib/listHealth.mjs";
 import type { Tier } from "@/lib/listHealth.mjs";
 import { useLocalStorage } from "@/lib/storage";
-import { initialSchools, buildSchool, reScore, type ScoredSchool } from "@/lib/data";
+import Link from "next/link";
+import { initialSchools, buildSchool, type ScoredSchool } from "@/lib/data";
 import { catalog } from "@/lib/catalog";
 import SchoolRow, { ROW_GRID } from "@/components/SchoolRow";
 import { encodeList } from "@/lib/share";
+import { DEFAULT_PROFILE, type Profile } from "@/lib/profile";
 
 const DOT: Record<Tier, string> = {
   reach: "bg-reach-dot", target: "bg-target-dot", likely: "bg-likely-dot", safety: "bg-safety-dot",
@@ -17,15 +19,8 @@ export default function Home() {
   const [schools, setSchools] = useLocalStorage<ScoredSchool[]>("shortlist:schools", initialSchools);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
   const [addQuery, setAddQuery] = useState("");
-  const [profile, setProfile] = useLocalStorage("shortlist:profile", { sat: 1450 });
-
+  const [profile] = useLocalStorage<Profile>("shortlist:profile", DEFAULT_PROFILE);
   const [copied, setCopied] = useState(false);
-
-  const setSat = (sat: number) => {
-    if (Number.isNaN(sat)) return;
-    setProfile({ sat });
-    setSchools((prev) => prev.map((s) => reScore(s, sat)));
-  };
 
   const share = async () => {
     const url = `${location.origin}/shared?d=${encodeList(profile.sat, schools)}`;
@@ -85,13 +80,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mb-4 flex items-center gap-3 text-sm">
-        <label htmlFor="sat" className="text-ink-muted">Your SAT</label>
-        <input id="sat" type="number" min={400} max={1600} step={10} value={profile.sat}
-          onChange={(e) => setSat(Number(e.target.value))}
-          className="nums w-24 rounded-md border border-hairline bg-surface px-2 py-1" />
-        <span className="text-xs text-ink-faint">Tiers and odds update as you change this</span>
-      </div>
+      <p className="mb-4 text-sm text-ink-muted">
+        Odds estimated for SAT <span className="nums font-medium text-ink">{profile.sat}</span>.{" "}
+        <Link href="/profile" className="text-accent hover:underline">Edit your profile</Link>
+      </p>
 
       <section className="rounded-lg border border-hairline bg-surface p-6 sm:p-7">
         <p className="mb-2 text-xs uppercase tracking-[0.1em] text-ink-faint">List health</p>
@@ -167,8 +159,9 @@ export default function Home() {
       </div>
 
       <p className="mt-3 text-xs text-ink-faint">
-        Projected odds are an estimate ({Math.round((c.reach / placed) * 100)}% of your list is reaches).
-        Tap stars to set importance; drag to reorder; × to remove.
+        Odds are estimates ({Math.round((c.reach / placed) * 100)}% of your list is reaches).
+        Tap stars to set importance; drag to reorder; × to remove.{" "}
+        <Link href="/methodology" className="text-accent">How odds are calculated</Link>
       </p>
     </main>
   );

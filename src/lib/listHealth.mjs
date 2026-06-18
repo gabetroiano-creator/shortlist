@@ -62,7 +62,7 @@ export function classifyAdmissionChance(input = {}) {
   if (admitRate < 10) tier = 'reach';
   else if (admitRate < 20 && (tier === 'safety' || tier === 'likely')) tier = 'target';
 
-  return { tier, projected: round(proj), projectedLabel: `~${round(proj)}%`, basis };
+  return { tier, projected: round(proj), projectedLabel: `${round(proj)}%`, basis };
 }
 
 // items: [{ tier }]  (tier in TIERS or 'unknown')

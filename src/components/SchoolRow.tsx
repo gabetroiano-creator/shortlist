@@ -36,8 +36,8 @@ function TierTag({ tier }: { tier: TierOrUnknown }) {
 
 function Projected({ s }: { s: ScoredSchool }) {
   return (
-    <span className="nums text-sm text-ink-muted" title={s.basis}>
-      {s.projectedLabel}{s.projected !== null && <span className="text-ink-faint"> est</span>}
+    <span className="nums text-sm text-ink-muted" title={`Estimated · ${s.basis}`}>
+      {s.projectedLabel}
     </span>
   );
 }

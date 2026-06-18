@@ -29,18 +29,23 @@ export function useAuth() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string) => {
+  const signInPassword = async (email: string, password: string) => {
     if (!supabase) return { error: "Accounts are not configured." };
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: window.location.origin },
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     return { error: error?.message ?? null };
+  };
+
+  const signUpPassword = async (email: string, password: string) => {
+    if (!supabase) return { error: "Accounts are not configured." };
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    // If email confirmation is on, there's no session yet.
+    const needsConfirm = !error && !data.session;
+    return { error: error?.message ?? null, needsConfirm };
   };
 
   const signOut = async () => {
     await supabase?.auth.signOut();
   };
 
-  return { user, loading, signIn, signOut };
+  return { user, loading, signInPassword, signUpPassword, signOut };
 }

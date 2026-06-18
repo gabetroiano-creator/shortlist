@@ -61,7 +61,7 @@ function SharedView() {
               )}
             </div>
             <div className="nums flex shrink-0 items-center gap-4 text-sm text-ink-muted">
-              <span>{s.projectedLabel}{s.projected !== null && <span className="text-ink-faint"> est</span>}</span>
+              <span>{s.projectedLabel}</span>
               <span>{s.deadline}</span>
             </div>
           </div>

@@ -38,7 +38,7 @@ export default function ComparePage() {
     );
 
   const rows: { label: string; key: string; better: Better; fmt: (s: ScoredSchool) => string }[] = [
-    { label: "Projected odds", key: "projected", better: "high", fmt: (s) => s.projectedLabel + (s.projected !== null ? " est" : "") },
+    { label: "Projected odds", key: "projected", better: "high", fmt: (s) => s.projectedLabel },
     { label: "Admit rate", key: "admitRate", better: "high", fmt: (s) => `${s.admitRate}%` },
     { label: "Net price / yr", key: "netPrice", better: "low", fmt: (s) => `$${s.netPrice.toLocaleString()}` },
     { label: "Deadline", key: "deadline", better: null, fmt: (s) => s.deadline },

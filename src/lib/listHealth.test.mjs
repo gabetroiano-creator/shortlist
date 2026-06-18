@@ -39,9 +39,9 @@ test('missing admit rate => unknown, never a fake number', () => {
   assert.equal(r.projectedLabel, '—');
 });
 
-test('projected label is always an estimate (~), never bare precision', () => {
+test('projected label is a plain percent (estimate is implied, not decorated)', () => {
   const r = classifyAdmissionChance({ admitRate: 35 });
-  assert.match(r.projectedLabel, /^~\d+%$/);
+  assert.match(r.projectedLabel, /^\d+%$/);
 });
 
 test('all-reaches list is not balanced and warns about a safety', () => {
