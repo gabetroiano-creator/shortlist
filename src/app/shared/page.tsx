@@ -69,7 +69,7 @@ function SharedView() {
       </div>
 
       <p className="mt-4 text-xs text-ink-faint">
-        Made with Shortlist. <a href="/" className="text-accent">Build your own list →</a>
+        Made with Shortlist. <a href="/list" className="text-accent">Build your own list →</a>
       </p>
     </main>
   );
