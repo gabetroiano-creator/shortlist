@@ -21,8 +21,12 @@ export default function ProfilePage() {
   const router = useRouter();
   const [profile, setProfile] = useLocalStorage<Profile>("shortlist:profile", DEFAULT_PROFILE);
 
+  // Merge over defaults so every field is defined even if an older saved profile
+  // (from before these fields existed) is loaded — avoids controlled/uncontrolled flips.
+  const p: Profile = { ...DEFAULT_PROFILE, ...profile };
+
   const set = <K extends keyof Profile>(key: K, value: Profile[K]) =>
-    setProfile((p) => ({ ...p, [key]: value }));
+    setProfile((prev) => ({ ...DEFAULT_PROFILE, ...prev, [key]: value }));
 
   const buildStarter = () => {
     const has = JSON.parse(localStorage.getItem("shortlist:schools") ?? "[]").length > 0;
@@ -47,26 +51,26 @@ export default function ProfilePage() {
       <h2 className="mt-7 font-serif text-lg font-semibold">Scores & grades</h2>
       <div className="mt-3 grid gap-5 sm:grid-cols-2">
         <Field label="SAT (total)" hint="Drives your reach / target / safety odds">
-          <input type="number" min={400} max={1600} step={10} value={profile.sat}
+          <input type="number" min={400} max={1600} step={10} value={p.sat}
             onChange={(e) => setSat(Number(e.target.value))} className={inputCls} />
         </Field>
         <Field label="ACT (composite)" hint="Used once Common Data Set ranges land">
-          <input type="number" min={1} max={36} value={profile.act ?? ""}
+          <input type="number" min={1} max={36} value={p.act ?? ""}
             onChange={(e) => set("act", e.target.value === "" ? null : Number(e.target.value))}
             placeholder="—" className={inputCls} />
         </Field>
         <Field label="GPA (unweighted, 0–4)" hint="Compared to admitted GPA once CDS data lands">
-          <input type="number" min={0} max={4} step={0.01} value={profile.gpa ?? ""}
+          <input type="number" min={0} max={4} step={0.01} value={p.gpa ?? ""}
             onChange={(e) => set("gpa", e.target.value === "" ? null : Number(e.target.value))}
             placeholder="—" className={inputCls} />
         </Field>
         <Field label="GPA (weighted)" hint="If your school weights, enter it too">
-          <input type="number" min={0} max={6} step={0.01} value={profile.weightedGpa ?? ""}
+          <input type="number" min={0} max={6} step={0.01} value={p.weightedGpa ?? ""}
             onChange={(e) => set("weightedGpa", e.target.value === "" ? null : Number(e.target.value))}
             placeholder="—" className={inputCls} />
         </Field>
         <Field label="Class rank (top %)" hint="e.g. 10 if you're top 10%">
-          <input type="number" min={1} max={100} value={profile.classRankPct ?? ""}
+          <input type="number" min={1} max={100} value={p.classRankPct ?? ""}
             onChange={(e) => set("classRankPct", e.target.value === "" ? null : Number(e.target.value))}
             placeholder="—" className={inputCls} />
         </Field>
@@ -75,15 +79,15 @@ export default function ProfilePage() {
       <h2 className="mt-8 font-serif text-lg font-semibold">About you</h2>
       <div className="mt-3 grid gap-5 sm:grid-cols-2">
         <Field label="Intended major" hint="Used to weight major-strength fit">
-          <input type="text" value={profile.major} onChange={(e) => set("major", e.target.value)}
+          <input type="text" value={p.major} onChange={(e) => set("major", e.target.value)}
             placeholder="e.g. Computer Science" className={inputCls} />
         </Field>
         <Field label="Home state" hint="For in-state public context (e.g. CA)">
-          <input type="text" maxLength={20} value={profile.homeState} onChange={(e) => set("homeState", e.target.value)}
+          <input type="text" maxLength={20} value={p.homeState} onChange={(e) => set("homeState", e.target.value)}
             placeholder="e.g. California" className={inputCls} />
         </Field>
         <Field label="Annual budget ($/yr)" hint="We'll flag schools above this">
-          <input type="number" min={0} max={100000} step={1000} value={profile.budget ?? ""}
+          <input type="number" min={0} max={100000} step={1000} value={p.budget ?? ""}
             onChange={(e) => set("budget", e.target.value === "" ? null : Number(e.target.value))}
             placeholder="—" className={inputCls} />
         </Field>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HowItWorks from "@/components/HowItWorks";
 
 export const metadata = {
   title: "Shortlist — a straight answer on your college list",
@@ -103,6 +104,8 @@ export default function Landing() {
             ))}
           </div>
         </section>
+
+        <HowItWorks />
       </main>
 
       <footer className="mx-auto max-w-app px-6 py-10 text-sm text-ink-faint">
