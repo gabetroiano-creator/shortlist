@@ -57,6 +57,12 @@ export default function SchoolPage({ params }: { params: Promise<{ id: string }>
         <span className="nums text-sm text-ink-muted">{school.projectedLabel} estimated chance</span>
       </div>
 
+      {profile.budget != null && school.netPrice > profile.budget && (
+        <p className="mt-3 rounded-md bg-reach-fill px-3 py-2 text-sm text-reach-text">
+          Above your ${profile.budget.toLocaleString()} budget — net price here is about ${school.netPrice.toLocaleString()}/yr.
+        </p>
+      )}
+
       {/* Why this verdict */}
       <section className="mt-6">
         <h2 className="font-serif text-lg font-semibold">Why this tier</h2>
